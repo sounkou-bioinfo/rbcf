@@ -1,9 +1,9 @@
 # Workflow derived from https://github.com/sounkou-bioinfo/goServeR/blob/main/.github/workflows/r.yml
 
 on:
-  push:
-    branches: [master]
-  pull_request:
+  #push:
+  #  branches: [master]
+  #pull_request:
   workflow_dispatch:
 
 name: r.yaml
