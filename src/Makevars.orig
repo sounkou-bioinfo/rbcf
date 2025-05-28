@@ -1,0 +1,35 @@
+HSTLIB_VERSION="1.10.2"
+HTSDIR=htslib
+OBJECTS=rbcf.o $(HTSDIR)/libhts.a
+PKG_CFLAGS=
+PKG_CPPFLAGS+=-I$(HTSDIR) -I. -Wall
+PKG_LIBS+=-L$(HTSDIR) -lcurl -lssl -lcrypto
+
+all:  $(SHLIB)
+
+$(SHLIB) : $(HTSDIR)/libhts.a rbcf_version.h $(HTSLIB)/version.h
+
+
+rbcf.o: rbcf_version.h  $(HTSDIR)/libhts.a  $(HTSLIB)/version.h
+
+
+rbcf_version.h:
+	echo -n '#define RBCF_VERSION "' > $@
+	-git describe --tags | tr -d '\n' >> $@
+	echo '"' >> $@
+
+
+$(HTSDIR)/libhts.so $(HTSDIR)/libhts.a $(HTSLIB)/version.h : $(HTSDIR)/Makefile
+	$(MAKE) -C $(HTSDIR) $(notdir $@)
+
+	
+$(HTSDIR)/Makefile:
+	rm -rf "$(HTSDIR)"
+	wget -O "htslib-$(HSTLIB_VERSION).tar.bz2" "https://github.com/samtools/htslib/releases/download/$(HSTLIB_VERSION)/htslib-$(HSTLIB_VERSION).tar.bz2"
+	tar xfj htslib-$(HSTLIB_VERSION).tar.bz2
+	mv "htslib-$(HSTLIB_VERSION)" "$(HTSDIR)"
+	(cd $(HTSDIR) && ./configure && sed -i '/^CFLAGS/s/$$/ -fPIC/' config.mk) || rm $@
+
+clean:
+	rm -f librbcf.so
+	rm -rf "$(HTSDIR)"

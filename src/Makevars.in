@@ -1,0 +1,21 @@
+HTSLIB_VERSION="1.21"
+HTSDIR=htslib-$(HTSLIB_VERSION)
+OBJECTS=rbcf.o $(HTSDIR)/libhts.a
+PKG_CFLAGS=
+PKG_CPPFLAGS+=-I$(HTSDIR) -I. -Wall @EXTRA_CPPFLAGS@
+PKG_LIBS+=-L$(HTSDIR) @EXTRA_LIBS@
+
+all: $(SHLIB)
+
+$(SHLIB): $(HTSDIR)/libhts.a rbcf_version.h
+
+rbcf.o: rbcf_version.h $(HTSDIR)/libhts.a
+
+rbcf_version.h:
+	echo -n '#define RBCF_VERSION "' > $@
+	-git describe --tags | tr -d '\n' >> $@
+	echo '"' >> $@
+
+clean:
+	rm -f librbcf.so
+	rm -rf "$(HTSDIR)"

@@ -1,0 +1,82 @@
+#!/bin/sh
+# Configure script for rbcf package
+# Based on RBCFLib and vcfppR configure script strategy
+
+set -eu
+
+THISDir=`dirname $0`
+THISDir=`realpath ${THISDir}`
+MAKE=`"${R_HOME}/bin/R" CMD config MAKE`
+CC=`"${R_HOME}/bin/R" CMD config CC`
+AR=`"${R_HOME}/bin/R" CMD config AR`
+RANLIB=`"${R_HOME}/bin/R" CMD config RANLIB`
+R_CPPFLAGS=`"${R_HOME}/bin/R" CMD config CPPFLAGS`
+R_CFLAGS=`"${R_HOME}/bin/R" CMD config CFLAGS`
+R_CPICFLAGS=`"${R_HOME}/bin/R" CMD config CPICFLAGS`
+
+# Get bundled htscodecs makefile
+HTSLIB_BUNDLED_MK=${THISDir}/inst/makefiles/htscodecs_bundled.mk
+
+# Compiler flags - using RBCFLib strategy
+CFLAGS="-Wall -g -O2 -fvisibility=hidden -fPIC -D_FILE_OFFSET_BITS=64"
+CPPFLAGS="${R_CPPFLAGS} -DNDEBUG"
+
+HTSLIB_VERSION="1.21"
+HTSLIB_DIR="${THISDir}/src/htslib-${HTSLIB_VERSION}"
+HTS_FILE="${HTSLIB_DIR}/libhts.a"
+
+echo "----------Configuring HTSlib in $HTSLIB_DIR-----------------"
+
+# Download and extract htslib if not present
+if [ ! -d "$HTSLIB_DIR" ]; then
+    cd "${THISDir}/src"
+    echo "Downloading htslib-${HTSLIB_VERSION}..."
+    wget -O "htslib-${HTSLIB_VERSION}.tar.bz2" "https://github.com/samtools/htslib/releases/download/${HTSLIB_VERSION}/htslib-${HTSLIB_VERSION}.tar.bz2"
+    tar xfj "htslib-${HTSLIB_VERSION}.tar.bz2"
+    rm -f "htslib-${HTSLIB_VERSION}.tar.bz2"
+fi
+
+cd "$HTSLIB_DIR"
+
+# Configure htslib
+./configure CFLAGS="${CFLAGS}"
+
+# Copy bundled htscodecs makefile if it exists
+if [ -f "${HTSLIB_BUNDLED_MK}" ]; then
+    echo "Using bundled htscodecs makefile"
+    rm -f htscodecs.mk && cp "${HTSLIB_BUNDLED_MK}" htscodecs.mk
+fi
+
+# Build htslib static library
+echo "Building htslib static library..."
+${MAKE} libhts.a CC="${CC}" CPPFLAGS="${CPPFLAGS}" AR="${AR}" RANLIB="${RANLIB}"
+
+# Determine extra libraries needed
+EXTRA_LIBS="-lz -lm -lbz2 -llzma -lcurl"
+
+if [ -f config.h ] && grep -wq "#define HAVE_LIBDEFLATE 1" config.h; then
+    EXTRA_LIBS="${EXTRA_LIBS} -ldeflate"
+fi
+
+if [ -f config.h ] && grep -wq "#define HAVE_LIBCRYPTO 1" config.h; then
+    EXTRA_LIBS="${EXTRA_LIBS} -lssl -lcrypto"
+fi
+
+echo "----------Creating Makevars file-----------------"
+cd "${THISDir}/src"
+
+# Generate final Makevars from template
+# Escape special characters for sed
+ESCAPED_CPPFLAGS=$(printf '%s\n' "$CPPFLAGS" | sed 's/[[\.*^$()+?{|]/\\&/g')
+ESCAPED_EXTRA_LIBS=$(printf '%s\n' "$EXTRA_LIBS" | sed 's/[[\.*^$()+?{|]/\\&/g')
+ESCAPED_CFLAGS=$(printf '%s\n' "$CFLAGS" | sed 's/[[\.*^$()+?{|]/\\&/g')
+
+sed \
+    -e "s|@EXTRA_CPPFLAGS@|${ESCAPED_CPPFLAGS}|g" \
+    -e "s|@EXTRA_LIBS@|${ESCAPED_EXTRA_LIBS}|g" \
+    -e "s|@CFLAGS@|${ESCAPED_CFLAGS}|g" \
+    Makevars.in > Makevars
+
+echo "Configuration complete!"
+echo "HTSlib version: ${HTSLIB_VERSION}"
+echo "Extra libraries: ${EXTRA_LIBS}"
