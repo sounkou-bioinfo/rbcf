@@ -3,7 +3,7 @@ OBJECTS=rbcf.o $(HTSDIR)/libhts.a
 PKG_CFLAGS=
 PKG_CPPFLAGS+=-I$(HTSDIR) -I. -Wall @EXTRA_CPPFLAGS@
 PKG_LIBS+=-L$(HTSDIR) $(HTSDIR)/libhts.a @EXTRA_LIBS@
-
+repo=https://github.com/sounkou-bioinfo/rbcf
 all: $(SHLIB)
 
 $(SHLIB): $(OBJECTS) $(HTSDIR)/libhts.a rbcf_version.h
@@ -12,7 +12,12 @@ rbcf.o: rbcf_version.h $(HTSDIR)/libhts.a
 
 rbcf_version.h:
 	echo -n '#define RBCF_VERSION "' > $@
-	-git describe --tags | tr -d '\n' >> $@
+	-if [ -d ".git" ]; then \
+		git rev-parse HEAD | tr -d '\n' >> $@; \
+	else \
+		wget -q -O- $(repo)/commits/master | grep -o -m 1 '/commit/[0-9a-f]\{40\}' | cut -d/ -f3 | tr -d '\n' >> $@ || \
+		echo "unknown-version" >> $@; \
+	fi
 	echo '"' >> $@
 
 clean:

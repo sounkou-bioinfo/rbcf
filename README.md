@@ -1,13 +1,15 @@
 # rbcf
+
 R Bindings for htslib/bcf+vcf
 
-[![Build Status](https://travis-ci.org/lindenb/rbcf.svg)](https://travis-ci.org/lindenb/rbcf)
 
-![Last commit](https://img.shields.io/github/last-commit/lindenb/rbcf.png)
+This is a fork of the archived repository lindenb/rbcf. It uses htslib-1.21 and made minor changes in rbcf.c for compliance with changes of the R C api.
+
+
 
 ## INSTALL
 
-Requirements: R, git, curl-dev, 
+Requirements: R, git, wget 
 
 ```
 git clone "https://github.com/lindenb/rbcf"
@@ -15,6 +17,12 @@ git clone "https://github.com/lindenb/rbcf"
 cd rbcf
 
 make
+```
+
+Or 
+
+```r
+remotes::install_github("sounkou-bioinfo/rbcf")
 ```
 
 ## Author
@@ -27,7 +35,7 @@ Pierre Lindenbaum PhD. Institut du Thorax. Nantes, France.
 
 **Code**:
 
-```
+```r
 # load the library
 library(rbcf)
 #print the version of the associated htslib 
@@ -49,7 +57,7 @@ paste("RBCF:",rcbf.version())
 
 **Code**:
 
-```
+```r
 # load rbcf
 library(rbcf)
 # we don't need the index for this file
@@ -74,7 +82,7 @@ print("Done.")
 
 **Code**:
 
-```
+```r
 # load rbcf
 library(rbcf)
 # we don't need the index for this file
@@ -451,7 +459,7 @@ for(flt in filters) {
 
 **Code**:
 
-```
+```r
 # load rbcf
 library(rbcf)
 # A vcf
