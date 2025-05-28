@@ -1,1 +1,1 @@
-#define RBCF_VERSION "0.0-1"
+#define RBCF_VERSION "0.0-17-17-gb338712"

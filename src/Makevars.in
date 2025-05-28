@@ -1,8 +1,8 @@
 HTSDIR=htslib
 OBJECTS=rbcf.o $(HTSDIR)/libhts.a
 PKG_CFLAGS=
-PKG_CPPFLAGS+=-I$(HTSDIR) -I. -Wall  -DNDEBUG
-PKG_LIBS+=-L$(HTSDIR) $(HTSDIR)/libhts.a -lz -lm -lbz2 -llzma -lcurl -ldeflate
+PKG_CPPFLAGS+=-I$(HTSDIR) -I. -Wall @EXTRA_CPPFLAGS@
+PKG_LIBS+=-L$(HTSDIR) $(HTSDIR)/libhts.a @EXTRA_LIBS@
 
 all: $(SHLIB)
 

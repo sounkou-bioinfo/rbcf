@@ -1,0 +1,17 @@
+#!/bin/sh
+# Cleanup script for rbcf package
+HTSLIB_VERSION=1.21
+echo "Cleaning up build artifacts..."
+
+# Remove generated files
+rm -f src/Makevars
+rm -f src/rbcf_version.h
+rm -f src/*.o
+rm -f src/*.so
+
+# Remove downloaded and built htslib
+cd  src/htslib || exit 1
+make clean || true
+rm -f libhts.a
+rm -f htscodecs.mk
+echo "Cleanup complete!"
