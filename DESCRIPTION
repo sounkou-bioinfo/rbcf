@@ -1,5 +1,5 @@
 Package: rbcf
-Version: 0.0-17
+Version: 0.0-21
 Date: 2020-04-27
 Title: vcf and bcf processing
 Author: Pierre Lindenbaum <plindenbaum@yahoo.fr>
@@ -13,6 +13,6 @@ Description: C Bindings to htslib (<https://github.com/samtools/htslib>)  for re
 License: MIT (>= 2)
 URL: https://github.com/lindenb/rbcf
 BugReports: https://github.com/lindenb/rbcf/issues
-SystemRequirements: GNU make, pkg-config, git
+SystemRequirements: GNU make, pkg-config, git, wget
 NeedsCompilation: yes
 OS_type: unix

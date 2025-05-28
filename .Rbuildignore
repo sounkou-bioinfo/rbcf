@@ -7,7 +7,7 @@ src/htslib.so$
 \.gitmodules
 \.gitignore
 .travis\.yml
-^src/htslib-1.21/test/.*$
+^src/htslib/test/.*$
 ^\.git
 err
 jeter.*
@@ -46,6 +46,4 @@ DONTCHECKMEIN.R
 ^.*\.devcontainer
 ^src/bcftools.*/test/.*$
 ^src/bcftools.*/*/*/tests/.*$
-^src/.*/libbcftools.a
-^src/bcftools-1.21/htslib-1.21/.*$
-^src/htslib-1.21/htscodecs/tests/.*$
+^src/htslib/htscodecs/tests/.*$

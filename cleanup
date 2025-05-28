@@ -10,7 +10,8 @@ rm -f src/*.o
 rm -f src/*.so
 
 # Remove downloaded and built htslib
-rm -rf src/htslib-${HTSLIB_VERSION}
-rm -f src/htslib-*.tar.bz2
-
+cd  src/htslib || exit 1
+make clean || true
+rm -f libhts.a
+rm -f htscodecs.mk
 echo "Cleanup complete!"

@@ -22,7 +22,7 @@ CFLAGS="-Wall -g -O2 -fvisibility=hidden -fPIC -D_FILE_OFFSET_BITS=64"
 CPPFLAGS="${R_CPPFLAGS} -DNDEBUG"
 
 HTSLIB_VERSION="1.21"
-HTSLIB_DIR="${THISDir}/src/htslib-${HTSLIB_VERSION}"
+HTSLIB_DIR="${THISDir}/src/htslib"
 HTS_FILE="${HTSLIB_DIR}/libhts.a"
 
 echo "----------Configuring HTSlib in $HTSLIB_DIR-----------------"
@@ -34,6 +34,7 @@ if [ ! -d "$HTSLIB_DIR" ]; then
     wget -O "htslib-${HTSLIB_VERSION}.tar.bz2" "https://github.com/samtools/htslib/releases/download/${HTSLIB_VERSION}/htslib-${HTSLIB_VERSION}.tar.bz2"
     tar xfj "htslib-${HTSLIB_VERSION}.tar.bz2"
     rm -f "htslib-${HTSLIB_VERSION}.tar.bz2"
+    mv "htslib-${HTSLIB_VERSION}" "$HTSLIB_DIR"
 fi
 
 cd "$HTSLIB_DIR"
