@@ -7,7 +7,7 @@ src/htslib.so$
 \.gitmodules
 \.gitignore
 .travis\.yml
-^src/htslib
+^src/htslib-1.21/test/.*$
 ^\.git
 err
 jeter.*
