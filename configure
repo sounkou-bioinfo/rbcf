@@ -31,7 +31,7 @@ echo "----------Configuring HTSlib in $HTSLIB_DIR-----------------"
 if [ ! -d "$HTSLIB_DIR" ]; then
     cd "${THISDir}/src"
     echo "Downloading htslib-${HTSLIB_VERSION}..."
-    wget -O "htslib-${HTSLIB_VERSION}.tar.bz2" "https://github.com/samtools/htslib/releases/download/${HTSLIB_VERSION}/htslib-${HTSLIB_VERSION}.tar.bz2"
+    curl -L -o "htslib-${HTSLIB_VERSION}.tar.bz2" "https://github.com/samtools/htslib/releases/download/${HTSLIB_VERSION}/htslib-${HTSLIB_VERSION}.tar.bz2"
     tar xfj "htslib-${HTSLIB_VERSION}.tar.bz2"
     rm -f "htslib-${HTSLIB_VERSION}.tar.bz2"
     mv "htslib-${HTSLIB_VERSION}" "$HTSLIB_DIR"

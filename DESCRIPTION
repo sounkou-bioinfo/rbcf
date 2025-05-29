@@ -13,6 +13,6 @@ Description: C Bindings to htslib (<https://github.com/samtools/htslib>)  for re
 License: MIT (>= 2)
 URL: https://github.com/lindenb/rbcf
 BugReports: https://github.com/lindenb/rbcf/issues
-SystemRequirements: GNU make, pkg-config, wget
+SystemRequirements: GNU make, pkg-config, curl
 NeedsCompilation: yes
 OS_type: unix
