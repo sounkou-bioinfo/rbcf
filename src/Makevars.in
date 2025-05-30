@@ -15,7 +15,7 @@ rbcf_version.h:
 	-if [ -d ".git" ]; then \
 		git rev-parse HEAD | tr -d '\n' >> $@; \
 	else \
-		curl -sL $(repo)/commits/master  | grep -o -m 1 '/commit/[0-9a-f]\{40\}' | cut -d/ -f3 | tr -d '\n' >> $@ || \
+		curl -sL $(repo)/commits/master  | grep -o -m 1 '/commit/[0-9a-f]\{40\}' | head -1 | cut -d/ -f3 | tr -d '\n' >> $@ || \
 		echo "unknown-version" >> $@; \
 	fi
 	echo '"' >> $@
