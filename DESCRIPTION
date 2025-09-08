@@ -11,8 +11,8 @@ Description: C Bindings to htslib (<https://github.com/samtools/htslib>)  for re
      The package is working although it might evolve in the future ( nature of the returned object, names of the functions, etc...).
      I also need to improve the tests and the documentation.
 License: MIT (>= 2)
-URL: https://github.com/lindenb/rbcf
-BugReports: https://github.com/lindenb/rbcf/issues
+URL: https://github.com/sounkou-bioinfo/rbcf
+BugReports: https://github.com/sounkou-bioinfo/rbcf/issues
 SystemRequirements: GNU make, pkg-config, curl
 NeedsCompilation: yes
 OS_type: unix
