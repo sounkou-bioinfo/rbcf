@@ -1,6 +1,5 @@
 Package: rbcf
-Version: 0.0-21
-Date: 2025-05-29
+Version: 1.21-0.0.0.9000
 Title: vcf and bcf processing
 Author: Pierre Lindenbaum <plindenbaum@yahoo.fr>
 Maintainer: Sounkou Mahamae Toure <sounkoutoure@gmail.com>
